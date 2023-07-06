@@ -35,3 +35,11 @@ def cadastrar_banco(request):
 
     return redirect('/perfil/gerenciar/')
 
+def gerenciar(request):
+    contas = Conta.objects.all()
+    #total_contas = contas.aggregate(Sum('valor'))
+    total_contas = 0
+
+    for conta in contas:
+        total_contas += conta.valor
+    return render(request, 'gerenciar.html', {'contas': contas, 'total_contas': total_contas})
