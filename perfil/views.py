@@ -21,6 +21,8 @@ def cadastrar_banco(request):
         messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
         return redirect('/perfil/gerenciar/')
     
+    # realizar mais validações
+
     conta = Conta(
         apelido = apelido,
         banco=banco,
@@ -50,4 +52,23 @@ def deletar_banco(request,id):
     conta.delete()
     messages.add_message(request, constants.WARNING, ' Conta Deletada!')
 
+    return redirect('/perfil/gerenciar/')
+
+
+#333
+def cadastrar_categoria(request):
+    nome = request.POST.get('categoria')
+    essencial = bool(request.POST.get('essencial'))
+
+    #todo
+    # classe is_instance p/ True or False
+
+    categoria = Categoria(
+        categoria=nome,
+        essencial=essencial
+    )
+
+    categoria.save()
+
+    messages.add_message(request, constants.SUCCESS, 'Categoria cadastrada com sucesso')
     return redirect('/perfil/gerenciar/')
