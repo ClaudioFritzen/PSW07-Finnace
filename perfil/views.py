@@ -45,4 +45,9 @@ def gerenciar(request):
     return render(request, 'gerenciar.html', {'contas': contas, 'total_contas': total_contas})
 
 def deletar_banco(request,id):
-    return HttpResponse(id)
+    conta = Conta.objects.get(id=id)
+
+    conta.delete()
+    messages.add_message(request, constants.WARNING, ' Conta Deletada!')
+
+    return redirect('/perfil/gerenciar/')
