@@ -53,9 +53,11 @@
                     <br>
                     <label>Banco</label>
                     <select name="banco" class="form-select">
-                        <option value""> Selecione um banco </option>
-                        {% for conta  in conta.choices %}
-                        <option value="">{{conta}}</option>
+                        <option value=""> Selecione um banco </option>
+                        <option value="CA">Caixa Economica</option>
+                        <option value="pj">Pessoa jurídica</option>
+                        {% for conta  in banco_choices %}
+                            <option value="{conta}">Teste</option>
                         {% endfor %}
                         
                     </select>
