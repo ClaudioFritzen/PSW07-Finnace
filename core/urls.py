@@ -9,7 +9,7 @@ from perfil import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('perfil/', include('perfil.urls')),
-    path("/", include("perfil.urls")),
+    path('/', include("perfil.urls")),
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

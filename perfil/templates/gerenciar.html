@@ -53,15 +53,21 @@
                     <br>
                     <label>Banco</label>
                     <select name="banco" class="form-select">
+                        
                         <option value=""> Selecione um banco </option>
+                        {% for conta in contas %}
+                            <option value=""> {{conta.banco}} </option>
+                        {% endfor %}
                         
                         
                     </select>
                     <br>
                     <label>Tipo</label>
                     <select name="tipo" class="form-select">
-                        <option value="pf">Pessoa física</option>
-                        <option value="pj">Pessoa jurídica</option>
+                        {% for conta in contas %}
+                            <option value="">{{conta.tipo}}</option>
+                        {% endfor %}
+                        
                     </select>
                     <br>
                     <label>Valor</label>
