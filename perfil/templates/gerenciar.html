@@ -109,13 +109,8 @@
                     {% for categoria in categorias  %}
                     <div class="lista-contas-main">
                         <span>{{categoria}}</span>
-                        {% if categoria.essencial == False %}
-                            <img src=' {% static 'perfil/img/check.png' %}'> 
-                        {% else %}
-                        <img src=' {% static 'perfil/img/exit.png' %}'>
-                        {% endif %}
-
-                        <span class="total-conta"><a href=""><img src=""></a></span>
+                        
+                        <span class="total-conta"><a href=""><img src="{% if categoria.essencial %} {% static 'perfil/img/check.png' %} {% else %} {% static 'perfil/img/exit.png' %} {% endif %} "></a></span>
                     </div>
                     <br>
                     {% endfor %}
