@@ -3,11 +3,27 @@ from django.http import HttpResponse
 from .models import Categoria, Conta
 from django.contrib import messages
 from django.contrib.messages import constants
+
+## 
+from .utils import calcula_total
+
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    contas = Conta.objects.all()
+
+    ## utilizando uma função
+    total_contas = calcula_total(contas, 'valor')
+
+    return render(request, 'home.html', {'contas': contas,'total_contas': total_contas })
 
 def gerenciar(request):
+    contas = Conta.objects.all()
+    categoria = Categoria.objects.all()
+
+
+    total_contas = calcula_total(contas, {'contas': contas,'total_contas': total_contas })
+
+
     return render(request, 'gerenciar.html')
 
 def cadastrar_banco(request):
