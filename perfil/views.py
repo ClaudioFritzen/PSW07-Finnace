@@ -21,7 +21,15 @@ def cadastrar_banco(request):
     if len(apelido.strip()) == 0 or len(valor.strip()) == 0:
         messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
         return redirect('/perfil/gerenciar/')
-    
+
+    ## validações 
+    if 'icone' in request.FILES:
+        logo = request.FILES['icone']
+        if 'icone':
+            if logo.size <= 0:
+                messages.add_message(request, constants.ERROR, 'A logo não pode ser vazia!!!')
+                return redirect('/perfil/gerenciar/')
+
     if "icone" in request.FILES:
         logo = request.FILES['icone']
         if 'icone':
@@ -92,3 +100,12 @@ def cadastrar_categoria(request):
 
     messages.add_message(request, constants.SUCCESS, 'Categoria cadastrada com sucesso')
     return redirect('/perfil/gerenciar/',)
+
+
+### update
+def update_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    categoria.essencial = not categoria.essencial
+    categoria.save()
+
+    return redirect('/perfil/gerenciar')
