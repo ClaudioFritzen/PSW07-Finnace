@@ -56,9 +56,8 @@
                         
                         <option value=""> Selecione um banco </option>
                         {% for conta in contas %}
-                            <option value=""> {{conta.banco}} </option>
+                            <option value="{{conta.id}}"> {{conta.banco}} </option>
                         {% endfor %}
-                        
                         
                     </select>
                     <br>
