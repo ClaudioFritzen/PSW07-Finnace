@@ -56,8 +56,9 @@
                         
                         <option value=""> Selecione um banco </option>
                         {% for conta in contas %}
-                            <option value="{{conta.id}}"> {{conta.banco}} </option>
+                            <option value="{{conta.id}}"> {{conta.get_banco_display}} </option>
                         {% endfor %}
+
                         
                     </select>
                     <br>
@@ -66,6 +67,7 @@
                         {% for conta in contas %}
                             <option value="">{{conta.tipo}}</option>
                         {% endfor %}
+                        
                         
                     </select>
                     <br>
@@ -90,6 +92,7 @@
                     <label>Categoria</label>
                     <input type="text" name="categoria" class="form-control">
                     <br>
+                    
 
                     <input type="checkbox" name="essencial" value="essencial"><label class="positivo">&nbspEssencial</label>
                     <br>
