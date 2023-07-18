@@ -25,6 +25,21 @@ def novo_valor(request):
         if tipo != 'S' and tipo != 'E':
             messages.add_message(request, constants.WARNING, 'Muito espertinho você! <br> Manda um email para teste@gmail.com')
             return redirect('/extrato/novo_valor' )
+        
+
+        ## FIXME: Essa função nao esta funcionando
+        if valor.strip() == 0:
+            valor = float(valor)
+            print(f'Convertendo', type())
+            if valor <= 0:
+                print(type(valor))
+                messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos!')
+                return redirect('/extrato/novo_valor' )
+                
+            messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos ou espaços vazio!')
+            return redirect('/extrato/novo_valor' )
+        
+
         ## criando uma instancia no banco
         valores = Valores (
             valor=valor,

@@ -1,6 +1,9 @@
 from django.db import models
 from perfil.models import Categoria, Conta
 
+## definido o dia
+from datetime import date
+
 # Create your models here.
 class Valores(models.Model):
     choice_tipo = (
@@ -11,7 +14,7 @@ class Valores(models.Model):
     valor = models.FloatField()
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     descricao = models.TextField()
-    data = models.DateField()
+    data = models.DateField(default=date.today)
     conta = models.ForeignKey(Conta, on_delete=models.DO_NOTHING)
     tipo = models.CharField(max_length=1, choices=choice_tipo)
 
