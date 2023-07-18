@@ -27,30 +27,7 @@ def cadastrar_banco(request):
     if len(apelido.strip()) == 0 or len(valor.strip()) == 0:
         messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
         return redirect('/perfil/gerenciar/')
-
-    ## validações 
-    if 'icone' in request.FILES:
-        logo = request.FILES['icone']
-        if 'icone':
-            if logo.size <= 0:
-                messages.add_message(request, constants.ERROR, 'A logo não pode ser vazia!!!')
-                return redirect('/perfil/gerenciar/')
-
-    if "icone" in request.FILES:
-        logo = request.FILES['icone']
-        if 'icone':
-            if logo.size > 100_000_000:
-                messages.add_message(request, constants.ERROR, 'A logo deve ter menos que 10MB')
-                return redirect('/perfil/gerenciar/')
-            else:
-                # se a logo estiver vazio, defina como None
-                logo = None
-    else:
-        # Se a chave ´logo' nao estiver em request.FILES, defina como none
-        logo = None 
-
-
-    
+    # TODO:
     # realizar mais validações
 
     conta = Conta(

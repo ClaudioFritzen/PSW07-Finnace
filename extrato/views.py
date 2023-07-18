@@ -21,6 +21,10 @@ def novo_valor(request):
         conta = request.POST.get('conta')
         tipo = request.POST.get('tipo')
 
+        # TODO: fazer as mensagens aparecer de acordo com o tipo saida e entrada
+        if tipo != 'S' and tipo != 'E':
+            messages.add_message(request, constants.WARNING, 'Muito espertinho você! <br> Manda um email para teste@gmail.com')
+            return redirect('/extrato/novo_valor' )
         ## criando uma instancia no banco
         valores = Valores (
             valor=valor,
@@ -30,17 +34,19 @@ def novo_valor(request):
             conta_id=conta,
             tipo=tipo
         )
-
         # salvando de fato
         valores.save()
+        if tipo == 'S':
+            messages.add_message(request, constants.INFO, 'Saída Registrada com sucesso!')
+            return redirect('/extrato/novo_valor' )
 
-        #mensagens
-        # TODO: fazer as mensagens aparecer de acordo com o tipo saida e entrada
-
-        messages.add_message(request, constants.SUCCESS, 'Entrada/Saída cadastrada com sucesso!')
-
+        elif tipo == 'E':
+            messages.add_message(request, constants.INFO, 'Entrada Registrada com sucesso!')
+            return redirect('/extrato/novo_valor' )
         
-        return redirect('/extrato/novo_valor' )
-        #return render(request, 'novo_valor.html', {'contas': contas, 'categorias': categorias})
+        
+        
+
+        return render(request, 'novo_valor.html', {'contas': contas, 'categorias': categorias})
     
     
