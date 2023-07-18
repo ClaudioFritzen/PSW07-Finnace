@@ -21,12 +21,15 @@ def novo_valor(request):
         conta = request.POST.get('conta')
         tipo = request.POST.get('tipo')
 
-        # TODO: fazer as mensagens aparecer de acordo com o tipo saida e entrada
+        # TODO: função working
         if tipo != 'S' and tipo != 'E':
             messages.add_message(request, constants.WARNING, 'Muito espertinho você! <br> Manda um email para teste@gmail.com')
-            return redirect('/extrato/novo_valor' )
+            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
         
-
+        if descricao.strip() == 0:
+            messages.add_message(request, constants.WARNING, 'Descrição não pode ficar vazia!')
+            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
+        
         ## FIXME: Essa função nao esta funcionando
         if valor.strip() == 0:
             valor = float(valor)
@@ -34,10 +37,10 @@ def novo_valor(request):
             if valor <= 0:
                 print(type(valor))
                 messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos!')
-                return redirect('/extrato/novo_valor' )
+                return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
                 
             messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos ou espaços vazio!')
-            return redirect('/extrato/novo_valor' )
+            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
         
 
         ## criando uma instancia no banco
@@ -51,17 +54,15 @@ def novo_valor(request):
         )
         # salvando de fato
         valores.save()
-        if tipo == 'S':
-            messages.add_message(request, constants.INFO, 'Saída Registrada com sucesso!')
-            return redirect('/extrato/novo_valor' )
 
-        elif tipo == 'E':
-            messages.add_message(request, constants.INFO, 'Entrada Registrada com sucesso!')
-            return redirect('/extrato/novo_valor' )
-        
-        
-        
+        # Atualizando os valor dinamicamente
+        conta = Conta.objects.get(id=conta)
+        if tipo == 'E':
+            conta.valor += int(valor)
+        else:
+            conta.valor -= int(valor)
 
-        return render(request, 'novo_valor.html', {'contas': contas, 'categorias': categorias})
+        conta.save()
+        return render(request, 'novo_valor.html')
     
     
