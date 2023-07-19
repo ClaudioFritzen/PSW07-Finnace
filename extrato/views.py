@@ -57,6 +57,7 @@ def novo_valor(request):
 
         # Atualizando os valor dinamicamente
         conta = Conta.objects.get(id=conta)
+
         if tipo == 'E':
             conta.valor += int(valor)
         else:
@@ -64,5 +65,7 @@ def novo_valor(request):
 
         conta.save()
         return render(request, 'novo_valor.html')
-    
-    
+
+def views_extrato(request):
+    return HttpResponse(f'estou em extrato views')
+    pass
