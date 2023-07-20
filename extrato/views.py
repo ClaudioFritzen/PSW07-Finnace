@@ -7,6 +7,8 @@ from django.contrib.messages import constants
 
 from perfil.models import Conta, Categoria
 
+from datetime import datetime
+
 from extrato.models import Valores
 # Create your views here.
 def novo_valor(request):
@@ -73,5 +75,7 @@ def views_extrato(request):
     contas = Conta.objects.all()
     categorias = Categoria.objects.all()
 
-    return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias})
+    valores = Valores.objects.filter(data__month=datetime.now().month)
+
+    return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
     
