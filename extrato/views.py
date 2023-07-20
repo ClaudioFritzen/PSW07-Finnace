@@ -5,6 +5,8 @@ from perfil.models import Categoria, Conta
 from django.contrib import messages
 from django.contrib.messages import constants
 
+from perfil.models import Conta, Categoria
+
 from extrato.models import Valores
 # Create your views here.
 def novo_valor(request):
@@ -67,5 +69,7 @@ def novo_valor(request):
         return render(request, 'novo_valor.html')
 
 def views_extrato(request):
-    return HttpResponse(f'estou em extrato views')
-    pass
+    
+    contas = Conta.objects.all()
+    return render(request, 'views_extrato.html')
+    
