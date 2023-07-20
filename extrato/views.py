@@ -71,5 +71,7 @@ def novo_valor(request):
 def views_extrato(request):
     
     contas = Conta.objects.all()
-    return render(request, 'views_extrato.html')
+    categorias = Categoria.objects.all()
+
+    return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias})
     
