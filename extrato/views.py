@@ -77,5 +77,15 @@ def views_extrato(request):
 
     valores = Valores.objects.filter(data__month=datetime.now().month)
 
+    ### filtros
+    conta_get = request.GET.get('conta')
+    categoria_get = request.GET.get('categoria')
+
+    if conta_get:
+        valores = valores.filter(conta__id=conta_get)
+
+    if categoria_get:
+        valores = valores.filter(categoria__id=categoria_get)
+
     return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
     
