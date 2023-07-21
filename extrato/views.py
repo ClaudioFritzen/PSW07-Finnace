@@ -12,7 +12,7 @@ from perfil.models import Conta, Categoria
 
 from datetime import datetime
 
-from . import settings
+from django.conf import settings 
 import os
 
 from django.template.loader import render_to_string
@@ -101,3 +101,16 @@ def views_extrato(request):
 
     return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
 
+def exportar_pdf(request):
+    valores = Valores.objects.filter(data__month=datetime.now().month)
+    contas = Conta.objects.all()
+    categorias = Categoria.objects.all()
+
+    path_template = os.path.join(settings.BASE_DIR, 'templates/partials/particial_extrato.html')
+
+    return HttpResponse(path_template)
+    #path_output = BytesIO()
+
+    #
+    # template_render = render_to_string(path_template, {'valores': valores, 'contas':contas, 'categorias':categorias})
+    #HTML(string=template_render).write_pdf(path_output)
