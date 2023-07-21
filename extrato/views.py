@@ -1,5 +1,8 @@
+from io import BytesIO
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+
+
 
 from perfil.models import Categoria, Conta
 from django.contrib import messages
@@ -8,6 +11,11 @@ from django.contrib.messages import constants
 from perfil.models import Conta, Categoria
 
 from datetime import datetime
+
+from . import settings
+import os
+
+from django.template.loader import render_to_string
 
 from extrato.models import Valores
 # Create your views here.
@@ -87,7 +95,9 @@ def views_extrato(request):
     if categoria_get:
         valores = valores.filter(categoria__id=categoria_get)
 
+    # TODO: limpar os filtros com um botao
+
+    # TODO: Limpar por periodo
+
     return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
-    
-def exportar_pdf(request):
-    pass
+
