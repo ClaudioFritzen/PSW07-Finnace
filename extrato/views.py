@@ -1,6 +1,6 @@
 from io import BytesIO
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 
 
 
@@ -16,6 +16,8 @@ from django.conf import settings
 import os
 
 from django.template.loader import render_to_string
+
+from weasyprint import HTML
 
 from extrato.models import Valores
 # Create your views here.
@@ -107,10 +109,17 @@ def exportar_pdf(request):
     categorias = Categoria.objects.all()
 
     path_template = os.path.join(settings.BASE_DIR, 'templates/partials/particial_extrato.html')
+    template_render = render_to_string(path_template, {'valores': valores, 'contas':contas, 'categorias':categorias})
+    
+    # salvando na memoria para não ocupar espaço desnessesario
+    path_output = BytesIO()
 
-    return HttpResponse(path_template)
-    #path_output = BytesIO()
+    HTML(string=template_render).write_pdf(path_output)
+    # voltando o ponteiro ate o inicio do arquivo
+    path_output.seek(0)
 
-    #
-    # template_render = render_to_string(path_template, {'valores': valores, 'contas':contas, 'categorias':categorias})
-    #HTML(string=template_render).write_pdf(path_output)
+    # TODO manipular css da renderização
+
+    return FileResponse(path_output, filename='extrato.pdf')
+
+ 
