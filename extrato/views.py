@@ -89,3 +89,5 @@ def views_extrato(request):
 
     return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
     
+def exportar_pdf(request):
+    pass
