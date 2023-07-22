@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     # meus apps
     'perfil',
     'extrato',
+    'planejamento',
+    
 ]
 
 MIDDLEWARE = [
