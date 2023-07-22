@@ -11,5 +11,5 @@ from perfil.models import Categoria, Conta
 
 def definir_planejamento(request):
     categorias = Categoria.objects.all()
-    return HttpResponse(categorias)
+    return render(request, 'definir_planejamento.html', {'categorias': categorias})
     
