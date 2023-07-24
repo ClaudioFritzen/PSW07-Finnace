@@ -1,5 +1,11 @@
 from django.shortcuts import render
+
+
+# lib para deixar de fazer a csrf_token 
 from django.views.decorators.csrf import csrf_exempt
+
+import json
+from django.http import JsonResponse
 
 from django.http import HttpResponse, JsonResponse
 
@@ -18,4 +24,12 @@ def definir_planejamento(request):
 
 @csrf_exempt
 def update_valor_categoria(request, id):
-    return JsonResponse({'valor': f'Recebi o valor {id} '})
+
+    novo_valor = json.load(request)['novo_valor']
+    categoria = Categoria.objects.get(id=id)
+    categoria.valor_planejamento = novo_valor
+    print(categoria)
+
+    categoria.save()
+
+    return JsonResponse({'status': 'Sucesso '})
