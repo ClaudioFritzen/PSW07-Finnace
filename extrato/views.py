@@ -2,7 +2,8 @@ from io import BytesIO
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, FileResponse
 
-
+## importando a função
+from extrato.utils import converter_para_float
 
 from perfil.models import Categoria, Conta
 from django.contrib import messages
@@ -28,6 +29,7 @@ def novo_valor(request):
         return render(request, 'novo_valor.html', {'contas': contas, 'categorias': categorias})
     
     elif request.method == "POST":
+
         valor = request.POST.get('valor')
         categoria = request.POST.get('categoria')
         descricao = request.POST.get('descricao')
@@ -38,24 +40,29 @@ def novo_valor(request):
         # TODO: função working
         if tipo != 'S' and tipo != 'E':
             messages.add_message(request, constants.WARNING, 'Muito espertinho você! <br> Manda um email para teste@gmail.com')
-            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
+            return redirect('/extrato/novo_valor', {'categorias':categoria, 'contas':contas} )
         
         if descricao.strip() == 0:
             messages.add_message(request, constants.WARNING, 'Descrição não pode ficar vazia!')
-            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
+            return redirect('/extrato/novo_valor', {'categorias':categoria, 'contas':contas} )
         
-        ## FIXME: Essa função nao esta funcionando
-        if valor.strip() == 0:
+        ## FIXME: 
+
+         ## verificando se esta vazio
+        if not valor:
+            messages.add_message(request, constants.ERROR, 'O campo de valor não pode estar vazio!! ')
+            return redirect('/extrato/novo_valor', {'categoria':categoria, 'conta':conta} )
+        
+        ##
+        try:
             valor = float(valor)
-            print(f'Convertendo', type())
-            if valor <= 0:
-                print(type(valor))
-                messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos!')
-                return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
-                
-            messages.add_message(request, constants.WARNING, 'Muito espertinho você! Não pode enviar numeros negativos ou espaços vazio!')
-            return redirect('/extrato/novo_valor', {'categorias':categorias, 'contas':contas} )
-        
+            if valor < 0 or valor > 1000:
+                messages.add_message(request, constants.ERROR, 'Valor permitido de 0 a 1000')
+                return redirect('/extrato/novo_valor', {'categoria':categoria, 'conta':conta} )
+
+        except ValueError:
+            messages.add_message(request, constants.ERROR, 'Insira um valor ')
+            return redirect('/extrato/novo_valor', {'categoria':categoria, 'contas':conta} )
 
         ## criando uma instancia no banco
         valores = Valores (
