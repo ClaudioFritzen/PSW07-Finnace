@@ -24,7 +24,7 @@ class Conta(models.Model):
     apelido = models.CharField(max_length=50)
     banco = models.CharField(max_length=2, choices=banco_choices)
     tipo = models.CharField(max_length=2, choices=tipo_choices)
-    valor = models.FloatField()
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
     icone = models.ImageField(upload_to='icones')
 
     def __str__(self):
