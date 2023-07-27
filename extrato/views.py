@@ -48,7 +48,7 @@ def novo_valor(request):
         
         ## FIXME: 
 
-         ## verificando se esta vazio
+         ## verificando se  O Campo valor esta vazio
         if not valor:
             messages.add_message(request, constants.ERROR, 'O campo de valor não pode estar vazio!! ')
             return redirect('/extrato/novo_valor', {'categoria':categoria, 'conta':conta} )
@@ -63,6 +63,17 @@ def novo_valor(request):
         except ValueError:
             messages.add_message(request, constants.ERROR, 'Insira um valor ')
             return redirect('/extrato/novo_valor', {'categoria':categoria, 'contas':conta} )
+        
+
+        # TODO: Verificar se o valor de categoria é o mesmo que está no banco de dados
+
+
+        # TODO: Verificar se o campo da descrição não está vazio
+
+        # TODO: Verificar se o campo data esta sendo preenchido
+
+        # TODO: Verificar se o banco é um banco valido
+
 
         ## criando uma instancia no banco
         valores = Valores (
@@ -109,7 +120,7 @@ def views_extrato(request):
 
     # TODO: limpar os filtros com um botao
 
-    # TODO: Limpar por periodo
+    # TODO: Filtrar por periodo
 
     return render(request, 'views_extrato.html', {'contas':contas, 'categorias':categorias, 'valores':valores})
 
