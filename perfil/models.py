@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 # Create your models here.
 
 class Categoria(models.Model):
@@ -9,6 +9,23 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.categoria
+    
+    ## muito louco isso
+    def total_gasto(self):
+        from extrato.models import Valores
+
+        valores = Valores.objects.filter(categoria__id = self.id).filter(data__month=datetime.now().month).filter(tipo='S')
+
+
+        # TODO: Chamar a função ja feita em utils.py
+        
+        total_valor = 0
+
+        for valor in valores:
+            total_valor += valor.valor
+    
+
+        return total_valor
 
 class Conta(models.Model):
     banco_choices = (
