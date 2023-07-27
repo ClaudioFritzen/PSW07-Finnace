@@ -18,7 +18,7 @@ class Categoria(models.Model):
 
 
         # TODO: Chamar a função ja feita em utils.py
-        
+
         total_valor = 0
 
         for valor in valores:
@@ -26,6 +26,17 @@ class Categoria(models.Model):
     
 
         return total_valor
+    
+    ## calculando a porcentagem
+    def calcula_planejamento_gasto_por_categoria(self):
+
+        # Adicione o try para evitar a divisão por zero
+        try:
+            return int(self.total_gasto() * 100 / self.valor_planejamento)
+            
+        except:
+            return 0
+        
 
 class Conta(models.Model):
     banco_choices = (
