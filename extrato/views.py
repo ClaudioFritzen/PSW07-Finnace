@@ -85,7 +85,10 @@ def novo_valor(request):
             conta.valor -= int(valor)
 
         conta.save()
-        return render(request, 'novo_valor.html')
+
+        messages.add_message(request, constants.SUCCESS, 'Valor Cadastrado com sucesso ')
+        return redirect('/extrato/novo_valor', {'categoria':categoria, 'contas':conta} )
+        
 
 def views_extrato(request):
     
