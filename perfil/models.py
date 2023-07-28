@@ -32,11 +32,11 @@ class Categoria(models.Model):
 
         # Adicione o try para evitar a divisão por zero
         try:
+         
             return int(self.total_gasto() * 100 / self.valor_planejamento)
             
         except:
             return 0
-        
 
 class Conta(models.Model):
     banco_choices = (
