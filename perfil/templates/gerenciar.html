@@ -52,6 +52,11 @@
                     <input type="text" name="apelido" class="form-control" placeholder="">
                     <br>
                     <label>Banco</label>
+                    <select class="form-select" id="banco" name="banco" required>
+                        <option value="" disabled selected>Selecione o banco</option>
+                    </select>
+
+                    <!--
                     <select name="banco" class="form-select">
                         
                         <option value=""> Selecione um banco </option>
@@ -61,6 +66,7 @@
 
                         
                     </select>
+                    -->
                     <br>
                     <label>Tipo</label>
                     <select name="tipo" class="form-select">
@@ -124,4 +130,28 @@
             </div>
         </div>
     </div>
+
+<!-- Criando um scripts para puxar a API dos Bancos -->
+
+<!-- Adicione o script para carregar os bancos da API -->
+<script>
+    // Função para carregar os bancos da API e preencher o campo de seleção
+    async function carregarBancos() {
+        const url = 'https://brasilapi.com.br/api/banks/v1';
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const selectBanco = document.getElementById('banco');
+
+        data.forEach(banco => {
+            const option = document.createElement('option');
+            option.value = banco.name;
+            option.textContent = banco.name;
+            selectBanco.appendChild(option);
+        });
+    }
+
+    // Chamar a função para carregar os bancos quando a página for carregada
+    carregarBancos();
+</script>
 {% endblock %}
