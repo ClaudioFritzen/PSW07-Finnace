@@ -1,0 +1,161 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="col-md-5">
+                <p class="fonte-destaque">Suas contas</p>
+                
+                <hr>
+
+                <div class="contas">
+
+                    {% for conta in contas %}
+                        <div class="lista-contas-main">
+
+                            <span><img width="10%" src="{{conta.icone.url}}">&nbsp&nbsp{{conta.apelido}}</span>
+
+                            <span class="total-conta positivo ">R$ {{conta.valor}}&nbsp&nbsp&nbsp <a href="/perfil/deletar_banco/{{conta.id}}"><img src="{% static 'perfil/img/exit.png' %}"></a></span>
+                        </div>
+                        <br>
+                    {% endfor %}
+                    
+                    
+                </div>
+
+                <hr>
+                <span class="fonte-destaque">Total:</span>
+                <span class="positivo total-conta font-destaque">{{total_contas}}</span>
+            </div>
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-5">
+                <p class="fonte-destaque">Nova conta</p>
+                
+                <form action="{% url 'cadastrar_banco' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
+                    <label>Apelido</label>
+                    <input type="text" name="apelido" class="form-control" placeholder="">
+                    <br>
+                    <label>Banco</label>
+                    <select class="form-select" id="banco" name="banco" required>
+                        <option value="" disabled selected>Selecione o banco</option>
+                    </select>
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Pesquisar por nome:</label>
+                        <input type="text" class="form-control" id="nome" name="nome">
+                    </div>
+
+                    <!--
+                    <select name="banco" class="form-select">
+                        
+                        <option value=""> Selecione um banco </option>
+                        {% for conta in contas %}
+                            <option value="{{conta.id}}"> {{conta.get_banco_display}} </option>
+                        {% endfor %}
+
+                        
+                    </select>
+                    -->
+                    <br>
+                    <label>Tipo</label>
+                    <select name="tipo" class="form-select">
+                        {% for conta in contas %}
+                            <option value="">{{conta.tipo}}</option>
+                        {% endfor %}
+                        
+                        
+                    </select>
+                    <br>
+                    <label>Valor</label>
+                    <input type="number" name="valor" class="form-control" placeholder="">
+                    <br>
+                    <input type="file" placeholder="Ícone" name="icone">
+                    <br>
+                    <br>
+                    <input style="width: 100%" type="submit" class="botao-principal">
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-5">
+                <span class="fonte-destaque">Nova categoria</span>
+
+                <form action="{% url 'cadastrar_categoria' %}" method="POST"> {% csrf_token %}
+                    <label>Categoria</label>
+                    <input type="text" name="categoria" class="form-control">
+                    <br>
+                    
+
+                    <input type="checkbox" name="essencial" value="essencial"><label class="positivo">&nbspEssencial</label>
+                    <br>
+                    <br>
+                    <input style="width: 100%" type="submit" class="botao-principal" value="Adicionar">
+                </form>
+            </div>
+
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-5">
+                <span class="fonte-destaque">Suas categoria</span>
+                <br>
+                <div class="contas">
+                    {% for categoria in categorias  %}
+                    <div class="lista-contas-main">
+                        <span>{{categoria}}</span>
+                        
+                        <span class="total-conta"><a href="{% url 'update_categoria' categoria.id %}"><img src="{% if categoria.essencial %} {% static 'perfil/img/check.png' %} {% else %} {% static 'perfil/img/exit.png' %} {% endif %} "></a></span>
+                    </div>
+                    <br>
+                    {% endfor %}
+                    
+                        
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Criando um scripts para puxar a API dos Bancos -->
+
+<!-- Adicione o script para carregar os bancos da API -->
+<script>
+    // Função para carregar os bancos da API e preencher o campo de seleção
+    async function carregarBancos() {
+        const url = 'https://brasilapi.com.br/api/banks/v1';
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const selectBanco = document.getElementById('banco');
+
+        data.forEach(banco => {
+            const option = document.createElement('option');
+            option.value = banco.name;
+            option.textContent = banco.name;
+            selectBanco.appendChild(option);
+        });
+    }
+
+    // Chamar a função para carregar os bancos quando a página for carregada
+    carregarBancos();
+</script>
+{% endblock %}
