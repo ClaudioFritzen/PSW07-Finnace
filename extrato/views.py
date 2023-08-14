@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, FileResponse
 
 ## importando a função
-from extrato.utils import converter_para_float
+
 
 from perfil.models import Categoria, Conta
 from django.contrib import messages
@@ -69,6 +69,7 @@ def novo_valor(request):
 
 
         # TODO: Verificar se o campo da descrição não está vazio
+        
 
         # TODO: Verificar se o campo data esta sendo preenchido
 
